@@ -25,7 +25,7 @@ class CartController extends Controller
     }
 
 
-    public function checkoutPost(): \Illuminate\Http\RedirectResponse
+    public function checkoutPost(Request $request): \Illuminate\Http\RedirectResponse
     {
         request()->validate([
             'name' => 'required',
@@ -46,6 +46,9 @@ class CartController extends Controller
         $order->details = request('details');
         $order->price = $total;
         $order->save();
+
+        $request->session()->forget('cart');
+
 
         return redirect()->route('index');
 
