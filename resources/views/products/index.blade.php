@@ -1,9 +1,8 @@
 @extends('layouts.app')
 @section('content')
 
-
-
     <div class="container">
+        <h1>Products</h1>
         <?php $total=0; ?>
         @forelse($products as $product)
             <?php $total += $product['price'];?>
@@ -31,6 +30,6 @@
             <div class="removebutton">
                 <a href="/AddProduct">AddProduct</a>
             </div>
-
+    </div>
 
 @endsection
