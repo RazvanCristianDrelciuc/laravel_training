@@ -14,7 +14,6 @@ class CartController extends Controller
         if ($cart == null)
             $cart = [];
 
-
         $products = Product::all();
         if (session('cart')) {
             $productIds = array_column(session()->get('cart'), 'product_id');
@@ -31,7 +30,6 @@ class CartController extends Controller
             'name' => 'required',
             'details' => 'required',
             'comments' => 'required',
-
         ]);
 
         $productIds = array_column(session()->get('cart'), 'product_id');
@@ -49,8 +47,6 @@ class CartController extends Controller
 
         $request->session()->forget('cart');
 
-
         return redirect()->route('index');
-
     }
 }

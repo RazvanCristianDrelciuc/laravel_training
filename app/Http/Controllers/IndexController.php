@@ -20,7 +20,10 @@ class IndexController extends Controller
         } else {
             $productIds = [];
         }
+        $data=session()->all();
+        dd($data);
         return view('index.index', ['products' => Product::whereNotIn('id', $productIds)->get()]);
+
     }
 
     /**

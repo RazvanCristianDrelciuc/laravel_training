@@ -15,7 +15,6 @@
             font-family: 'Nunito';
         }
     </style>
-
 </head>
 
 <body>
@@ -24,7 +23,7 @@
         <li><a href="/index">Index</a></li>
         <li><a href="/cart">Cart</a></li>
         <li><a href="/products">Products</a></li>
-        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
 
 {{--        <!--        --><?php //if($_SESSION['admin'] == 1) { ?>--}}
 {{--        <li><a href="products.php">PRODUCTS</a></li>--}}

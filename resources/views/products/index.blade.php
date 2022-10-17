@@ -20,17 +20,16 @@
                 <div class="removebutton">
                     <a href="{{ route('deleteProduct',['id' => $product->id])  }}"  name="remove">Remove Product</a>
                 </div>
+
                 <div class="removebutton">
-                    <a href="{{ route('updateProduct')  }}"  name="remove">Update Product</a>
+                    <a href="{{ route('updateProduct',['id' => $product->id])  }}"  name="remove">UPDATE</a>
                 </div>
-                <div class="removebutton">
-                    <a href="{{ route('updateProduct')  }}"  name="remove">Show</a>
-                </div>
+
             </ul>
     @empty
     @endforelse
             <div class="removebutton">
-                <a href="{{ route('removeFromCart',['id' => $product->id])  }}"  name="remove">Add Item</a>
+                <a href="/AddProduct">AddProduct</a>
             </div>
 
 

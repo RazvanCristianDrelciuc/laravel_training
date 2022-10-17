@@ -42,15 +42,67 @@ class ProductsController extends Controller
 
         $productRemove=Product::find($id);
         $productRemove->delete();
+        $cart=session()->get('cart');
+        foreach(session('cart') as $key =>$val){
+            if ($val['product_id'] == $id) {
+                session()->pull('cart.' . $key);
+            }
+        }
         return redirect()->route('products');
+
     }
-    public function updateProduct($id){
+
+    public function updateProduct(Request $request, $id){
+
+        $product=Product::find($id);
+        return view('product', ['product' => $product]);
+    }
+
+    public function update(Request $request, $id){
+        request()->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+        ]);
+        $product = Product::find($id);
+
+        $product->title=$request->input('title');
+        $product->description=$request->input('description');
+        $product->price=$request->input('price');
+        $product->image=$request->input('image');
+        $product->update();
+
+        return redirect()->route('index');
+    }
+
+    public function create(Request $request, $id){
+        $product= Product::find($id);
+        return view('product', ['product' => $product]);
+
+    }
+
+    public function add(Request $request){
         return view('product');
     }
 
-    public function create()
-    {
-        //
+    public function addProduct(Request $request){
+
+        request()->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+        ]);
+
+        $data=$request->input();
+        $product = new Product;
+        $product->title=$data['title'];
+        $product->description=$data['description'];
+        $product->price=$data['price'];
+        $product->image=$data['image'];
+        $product->save();
+
+        return redirect()->route('index');
+
     }
 
 
@@ -76,10 +128,7 @@ class ProductsController extends Controller
     }
 
 
-    public function update(Request $request, Product $proudct)
-    {
-        //
-    }
+
 
 
     public function destroy(Product $proudct)

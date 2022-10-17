@@ -1,23 +1,43 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="formular">
-        <form action="" method="post">
+    <div class="container">
+        <form action="{{isset($product) ? route('update',['id' => $product->id]) : route('AddProduct')}}" method="post">
             @csrf
-            <label>Name</label>
-            <input type="text" name="name" value="{{$product['title']}}" required><br>
+            @method('PUT')
+            <div class="proditem">
+                <div class="prodimage">
+                    <img src="{{ isset($product) ? asset('/images/'.$product->image) : '' }}">
+                </div>
+            </div>
+            <label>Product Title</label>
+                <input type="text" name="title" value="{{isset($product) ? ($product['title']) : ''}}" required><br>
             <span ></span>
             <br>
-            <label>Contact Details: </label>
-            <input type="text" name="details" value="" required><br>
+            <label>Description </label>
+                <input type="text" name="description" value="{{isset($product) ? ($product['description']) : ''}}" required><br>
             <span ></span>
             <br>
-            <label>Comments: </label>
-            <input type="text" name="comments" value=""><br>
+            <label>Price </label>
+                <input type="text" name="price" value="{{isset($product) ? ($product['price']) : ''}}"><br>
             <span ></span>
             <br>
-            <input type="submit" name="submit" value="Checkout">
+            <label>Price </label>
+            <input type="file" class="form-control" required name="image">
+            <span ></span>
+            <br>
+        @if(isset($product))
+                <div class="removebutton">
+                    <input type="submit" name="button" value="update">
+                </div>
+            @else
+                <div class="removebutton">
+                    <input type="submit" name="button" value="Add">
+                </div>
+            @endif
             <p>* required field</p>
         </form>
     </div>
     <a href="/index"> Go to Index</a>
+@endsection
+{{--//{{ route('updateProduct',['id' => $product->id])  }}--}}
