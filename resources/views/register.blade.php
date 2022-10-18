@@ -17,7 +17,7 @@
         Password: <input type="text" name="password" value="" required><br>
         <span >*</span>
         <br>
-        <a href="/loginUser">LogIn</a>
+        <a href="/login">LogIn</a>
         <div class="removebutton">
             <input type="submit" name="button" value="REGISTER">
         </div>

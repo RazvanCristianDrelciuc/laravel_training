@@ -40,6 +40,4 @@ Route::get('/loginUser',[App\Http\Controllers\LoginController::class, 'index'])-
 Route::put('/login',[App\Http\Controllers\LoginController::class, 'authenticate'])->name('loginUser');
 
 Route::get('/orders',[App\Http\Controllers\OrdersController::class, 'index'])->name('orders');
-
-
-
+Route::get('/orders/{order}',[App\Http\Controllers\OrdersController::class, 'viewOrder'])->name('order');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -33,8 +34,9 @@ class CartController extends Controller
 
         $productIds = array_column(session()->get('cart'), 'product_id');
         $products=Product::whereIn('id', $productIds)->get();
+
         $total=0;
-        foreach($products as $product){
+        foreach($products as $product) {
             $total += $product['price'];
         }
 
@@ -43,6 +45,16 @@ class CartController extends Controller
         $order->details = request('details');
         $order->price = $total;
         $order->save();
+
+        foreach($products as $product){
+
+            $item= new Item();
+            $item->item_title=$product['title'];
+            $item->order_id=$order->id;
+            $item->item_description=$product['description'];
+            $item->item_price=$product['price'];
+            $item->save();
+        }
 
         $request->session()->forget('cart');
 

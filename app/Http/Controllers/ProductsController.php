@@ -104,35 +104,4 @@ class ProductsController extends Controller
         return redirect()->route('index');
 
     }
-
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show($id)
-    {
-        $product = Product::all();
-        return view('product', [
-            'products' => $products,
-        ]);
-
-    }
-
-
-    public function edit(Product $proudct)
-    {
-        //
-    }
-
-
-
-
-
-    public function destroy(Product $proudct)
-    {
-        //
-    }
 }

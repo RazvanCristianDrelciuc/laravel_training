@@ -9,7 +9,7 @@
             <p>Please fill in this form to connect to an account.</p>
             <span ></span>
             <hr>
-            Name: <input type="text" name="user_name" value="" required><br>
+            Name: <input type="text" name="name" value="" required><br>
             <span ></span>
             <br>
             Password: <input type="text" name="password" value="" required><br>
