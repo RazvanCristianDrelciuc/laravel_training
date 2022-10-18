@@ -26,11 +26,11 @@
         <li><a href="/register">Register</a></li>
         <li><a href="/orders">Orders</a></li>
 
-{{--        <!--        --><?php //if($_SESSION['admin'] == 1) { ?>--}}
-{{--        <li><a href="products.php">PRODUCTS</a></li>--}}
-{{--        <li><a href="product.php">PRODUCT</a></li>--}}
-{{--        <li><a href="orders.php">ORDERS</a></li>--}}
-{{--<!--        --><?php //} ?>--}}
+        {{--        <!--        --><?php //if($_SESSION['admin'] == 1) { ?>--}}
+        {{--        <li><a href="products.php">PRODUCTS</a></li>--}}
+        {{--        <li><a href="product.php">PRODUCT</a></li>--}}
+        {{--        <li><a href="orders.php">ORDERS</a></li>--}}
+        {{--<!--        --><?php //} ?>--}}
     </ul>
 </div>
 @yield('content')

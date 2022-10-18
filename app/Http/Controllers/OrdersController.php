@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Product;
@@ -16,7 +17,8 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function viewOrder($id){
+    public function viewOrder($id)
+    {
         $order = Order::find($id);
         $items = Item::where('order_id', $id)->get();
 

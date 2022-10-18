@@ -11,22 +11,22 @@
                 </div>
             </div>
             <label>Product Title</label>
-                <input type="text" name="title" value="{{isset($product) ? ($product['title']) : ''}}" required><br>
-            <span ></span>
+            <input type="text" name="title" value="{{isset($product) ? ($product['title']) : ''}}" required><br>
+            <span></span>
             <br>
             <label>Description </label>
-                <input type="text" name="description" value="{{isset($product) ? ($product['description']) : ''}}" required><br>
-            <span ></span>
+            <input type="text" name="description" value="{{isset($product) ? ($product['description']) : ''}}" required><br>
+            <span></span>
             <br>
             <label>Price </label>
-                <input type="text" name="price" value="{{isset($product) ? ($product['price']) : ''}}"><br>
-            <span ></span>
+            <input type="text" name="price" value="{{isset($product) ? ($product['price']) : ''}}"><br>
+            <span></span>
             <br>
             <label>Price </label>
             <input type="file" class="form-control" required name="image">
-            <span ></span>
+            <span></span>
             <br>
-        @if(isset($product))
+            @if(isset($product))
                 <div class="removebutton">
                     <input type="submit" name="button" value="update">
                 </div>
@@ -39,5 +39,5 @@
         </form>
     </div>
     <a href="/index"> Go to Index</a>
+
 @endsection
-{{--//{{ route('updateProduct',['id' => $product->id])  }}--}}
