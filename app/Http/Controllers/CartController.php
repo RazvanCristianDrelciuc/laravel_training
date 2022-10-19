@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CheckoutMail;
 use App\Models\Item;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -56,6 +58,9 @@ class CartController extends Controller
             $item->save();
         }
 
+    /*
+        Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order, $item));
+    */
         $request->session()->forget('cart');
 
         return redirect()->route('index');
