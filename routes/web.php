@@ -20,7 +20,7 @@ Route::get('/addToCart/{id}', [App\Http\Controllers\ProductsController::class, '
 Route::get('/removeFromCart/{id}', [App\Http\Controllers\ProductsController::class, 'removeFromCart'])->name('removeFromCart');
 Route::post('/checkout', [App\Http\Controllers\CartController::class, 'checkoutPost'])->name('checkout');
 
-Route::get('/products', [App\Http\Controllers\ProductsController::class, 'index'])->name('products');
+Route::get('/products', [App\Http\Controllers\ProductsController::class, 'index'])->name('products')->middleware('admin');
 Route::get('/product/{id}', [App\Http\Controllers\ProductsController::class, 'create']);
 Route::get('/products/{product}', [App\Http\Controllers\ProductsController::class, 'create']);
 Route::get('/AddProduct', [App\Http\Controllers\ProductsController::class, 'add']);
@@ -41,3 +41,7 @@ Route::put('/login', [App\Http\Controllers\LoginController::class, 'authenticate
 
 Route::get('/orders', [App\Http\Controllers\OrdersController::class, 'index'])->name('orders');
 Route::get('/orders/{order}', [App\Http\Controllers\OrdersController::class, 'viewOrder'])->name('order');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

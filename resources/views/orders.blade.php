@@ -3,9 +3,10 @@
 
     <h1>Orders</h1>
     <div class="container">
-        <?php $total = 0; ?>
+        <?php $ct=0; ?>
         @forelse($orders as $order)
-            <?php $total += $order['price'];?>
+            <?php $ct++;?>
+            <h2>Order nr: {{$ct}}</h2>
             <ul>
                 <li>{{ ucfirst($order->user_name) }}</li>
                 <li>{{ ucfirst($order->details) }}</li>
