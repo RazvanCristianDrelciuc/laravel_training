@@ -17,7 +17,7 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function viewOrder($id)
+    public function show($id)
     {
         $order = Order::find($id);
         $items = Item::where('order_id', $id)->get();

@@ -37,9 +37,10 @@
                     <ul class="">
                         <li><a href="/index">Index</a></li>
                         <li><a href="/cart">Cart</a></li>
+                        @if  (Auth::user() && Auth::user()->is_admin == 1)
                         <li><a href="/products">Products</a></li>
-                        <li><a href="/register">Register</a></li>
                         <li><a href="/orders">Orders</a></li>
+                        @endif
                     </ul>
                     </div>
                     <!-- Right Side Of Navbar -->

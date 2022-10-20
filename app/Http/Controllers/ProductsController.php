@@ -7,15 +7,18 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::all();
+        if ($request->expectsJson()) {
+            return response($products);
+        }
         return view('products.index', [
             'products' => $products,
         ]);
     }
 
-    public function addTocart(Request $request, $id)
+    public function store(Request $request, $id)
     {
         $product = Product::find($id);
 
@@ -38,7 +41,7 @@ class ProductsController extends Controller
         return redirect()->route('cart');
     }
 
-    public function deleteProduct($id)
+    public function destroy($id)
     {
         $productRemove = Product::find($id);
         $productRemove->delete();
@@ -102,6 +105,6 @@ class ProductsController extends Controller
         $product->image = $data['image'];
         $product->save();
 
-        return redirect()->route('index');
+        return redirect()->route('products');
     }
 }

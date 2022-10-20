@@ -1,14 +1,12 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="container">
-
-        <h1>Order</h1>
+    <h1>Order</h1>
         <h3>Order ID: {{$order->id}}</h3>
         <h3>User name: {{$order->user_name}}</h3>
         <h3>Order Details: {{$order->details}}</h3>
         <h3>Total price: {{$order->price}}</h3>
-
+        <div class="container">
         <?php $ct = 0; ?>
         @forelse($items as $item)
             <?php $ct++; ?>
