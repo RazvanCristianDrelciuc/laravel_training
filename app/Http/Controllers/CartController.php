@@ -11,17 +11,26 @@ use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $cart = session()->get('cart');
-        if ($cart == null)
+        if ($cart == null) {
             $cart = [];
+        }
 
         $products = Product::all();
         if (session('cart')) {
             $productIds = array_column(session()->get('cart'), 'product_id');
         } else {
             $productIds = [];
+        }
+
+        if ($request->ajax()) {
+            return response()->json(
+                [
+                    'products' => Product::whereIn('id', $productIds)->get(),
+                ]
+            );
         }
         return view('cart', ['products' => Product::whereIn('id', $productIds)->get()]);
     }
@@ -58,9 +67,9 @@ class CartController extends Controller
             $item->save();
         }
 
-    /*
-        Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order, $item));
-    */
+        /*
+            Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order, $item));
+        */
         $request->session()->forget('cart');
 
         return redirect()->route('index');

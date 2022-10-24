@@ -21,13 +21,11 @@ class ProductsController extends Controller
     public function store(Request $request, $id)
     {
         $product = Product::find($id);
-
         $product = ['product_id' => $id];
         $productIds = $request->session()->has('cart') ? array_column(session()->get('cart'), 'product_id') : [];
         if (!(in_array($id, $productIds))) {
             $request->session()->push('cart', $product);
         }
-
         return redirect()->route('index');
     }
 
@@ -45,7 +43,6 @@ class ProductsController extends Controller
     {
         $productRemove = Product::find($id);
         $productRemove->delete();
-        $cart = session()->get('cart');
         foreach (session('cart') as $key => $val) {
             if ($val['product_id'] == $id) {
                 session()->pull('cart.' . $key);
@@ -68,7 +65,6 @@ class ProductsController extends Controller
             'price' => 'required',
         ]);
         $product = Product::find($id);
-
         $product->title = $request->input('title');
         $product->description = $request->input('description');
         $product->price = $request->input('price');

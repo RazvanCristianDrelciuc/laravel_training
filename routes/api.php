@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/app', [App\Http\Controllers\IndexController::class, 'indexApp'])->name('indexApp');
+Route::get('/app-index', [App\Http\Controllers\IndexController::class, 'indexspa']);
+Route::get('/cart', [App\Http\Controllers\CartController::class, 'index']);
+Route::get('/products', [App\Http\Controllers\ProductsController::class, 'index'])->name('products')->middleware('admin');

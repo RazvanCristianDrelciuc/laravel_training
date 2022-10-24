@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <div class="formular">
         <form action="{{route('registerUser')}}" method="post">
             @csrf
@@ -23,4 +24,5 @@
             </div>
             <p>* required field</p>
         </form>
+
 @endsection

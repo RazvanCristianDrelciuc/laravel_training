@@ -47,5 +47,4 @@
     </div>
     <a href="/index"> Go to Index</a>
 
-
 @endsection

@@ -56,3 +56,34 @@
     border-radius: 4px;
     box-sizing: border-box;
 }
+/*body{*/
+/*    background-color: white;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    width: 100%;*/
+/*    background-color: rgb(216, 241, 161);*/
+/*    flex-direction: column;*/
+/*}*/
+.productdetail {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    background-color: rgb(165, 112, 112);
+    margin-top: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    width: 100%;
+
+    background-color: rgb(216, 241, 161);
+    flex-direction: column;
+    margin-top: 30px;
+}

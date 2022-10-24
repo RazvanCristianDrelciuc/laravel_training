@@ -8,5 +8,4 @@
         <a href="/products"> Go to Products </a>
     </div>
 
-
 @endsection

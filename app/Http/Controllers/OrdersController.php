@@ -21,7 +21,6 @@ class OrdersController extends Controller
     {
         $order = Order::find($id);
         $items = Item::where('order_id', $id)->get();
-
         return view('order', ['order' => $order, 'items' => $items]);
     }
 }
