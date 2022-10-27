@@ -18,7 +18,6 @@ class CartController extends Controller
             $cart = [];
         }
 
-        $products = Product::all();
         if (session('cart')) {
             $productIds = array_column(session()->get('cart'), 'product_id');
         } else {
@@ -55,21 +54,12 @@ class CartController extends Controller
         $order->user_name = request('name');
         $order->details = request('details');
         $order->price = $total;
+
         $order->save();
+        $order->products()->attach($products);
 
-        foreach ($products as $product) {
+        Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order));
 
-            $item = new Item();
-            $item->item_title = $product['title'];
-            $item->order_id = $order->id;
-            $item->item_description = $product['description'];
-            $item->item_price = $product['price'];
-            $item->save();
-        }
-
-        /*
-            Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order, $item));
-        */
         $request->session()->forget('cart');
 
         return redirect()->route('index');

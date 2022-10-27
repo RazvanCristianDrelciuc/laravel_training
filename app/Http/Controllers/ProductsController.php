@@ -51,7 +51,7 @@ class ProductsController extends Controller
         return redirect()->route('products');
     }
 
-    public function updateProduct(Request $request, $id)
+    public function updateProduct($id)
     {
         $product = Product::find($id);
         return view('product', ['product' => $product]);
@@ -74,13 +74,13 @@ class ProductsController extends Controller
         return redirect()->route('products');
     }
 
-    public function create(Request $request, $id)
+    public function create($id)
     {
         $product = Product::find($id);
         return view('product', ['product' => $product]);
     }
 
-    public function add(Request $request)
+    public function add()
     {
         return view('product');
     }

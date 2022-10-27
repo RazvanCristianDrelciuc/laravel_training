@@ -8,15 +8,12 @@
         <h3>Total price: {{$order->price}}</h3>
         <div class="container">
         <?php $ct = 0; ?>
-        @forelse($items as $item)
-            <?php $ct++; ?>
-            <ul>
-                <li><strong>Product nr: {{$ct}}</strong></li>
-                <li>Product title: {{ $item['item_title'] }}</li>
-                <li>Product description: {{ $item['item_description']}}</li>
-                <li>Product price: {{ $item['item_price'] }}</li>
-            </ul>
-        @empty
-        @endforelse
+            @foreach ($order->products as $product)
+                <div>
+                    <h4>{{ __('Title') }}: {{ $product->title }}</h4>
+                    <h4>{{ __('Description') }}: {{ $product->description }}</h4>
+                    <h4>{{ __('Price') }}: {{ $product->price }} </h4>
+                </div>
+            @endforeach
     </div>
 @endsection

@@ -11,15 +11,17 @@
     height: 100%;
     object-fit: fit;
 }
+
 .prodimage {
     width: 15%;
     height: 100%;
 }
-.nav{
+
+.nav {
     background-color: aqua;
 }
 
-.nav ul{
+.nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -27,11 +29,11 @@
     background-color: rgb(205, 203, 203);
 }
 
-.nav li{
-    float:right;
+.nav li {
+    float: right;
 }
 
-.nav li a{
+.nav li a {
     display: block;
     color: white;
     text-align: center;
@@ -39,15 +41,15 @@
     text-decoration: none;
 }
 
-.formular{
-    display:flex;
+.formular {
+    display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     padding-top: 20px;
     background-color: bisque;
 }
 
-.formular input[type=text]{
+.formular input[type=text] {
     width: 100%;
     padding: 12px 20px;
     margin: 5px 0;
@@ -56,6 +58,7 @@
     border-radius: 4px;
     box-sizing: border-box;
 }
+
 /*body{*/
 /*    background-color: white;*/
 /*    display: flex;*/
@@ -75,7 +78,7 @@
     align-items: center;
 }
 
-.list{
+.list {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,3 +90,5 @@
     flex-direction: column;
     margin-top: 30px;
 }
+
+.pa

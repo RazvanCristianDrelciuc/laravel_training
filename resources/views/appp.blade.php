@@ -23,18 +23,6 @@
                     '</tr>',
 
                 ].join('');
-                // if (window.location.hash === '#products') {
-                //     html += [
-                //         '<th colspan="2"> Action </th>',
-                //         '</tr>'
-                //     ].join('');
-                // } else {
-                //     html += [
-                //         '<th> Action </th>',
-                //         '</tr>',
-                //         '</thead>'
-                //     ].join('');
-                // }
 
                 $.each(products, function (key, product) {
                     html += [
@@ -55,17 +43,13 @@
                             html += '<td><button class="update" data-id="' + product.id + '"> Update product</button></td>';
                             html += '<td><button class="delete" data-id="' + product.id + '"> Delete product</button></td>';
                             break;
-
                         default:
                             html += '<td><button class="add" data-id="' + product.id + '"> Add to Cart</button></td>';
-                            //html +='</div>';
                             break;
                     }
                 });
-
                 return html;
             }
-            // html += '<td><img src="storage/images/' + product.image + '" style="width: 100px; height: 100px;" data-image="' + product.image + '"></td>';
 
             window.onhashchange = function () {
                 // First hide all the pages
@@ -87,14 +71,14 @@
                         break;
                     case '#products':
                         // Show the cart page
-                        $('.cart').show();
+                        $('.products').show();
                         // Load the cart products from the server
                         $.ajax('/products', {
                             dataType: 'json',
                             method: 'GET',
                             success: function (response) {
                                 // Render the products in the cart list
-                                $('.cart .list').html(renderList(response));
+                                $('.products .list').html(renderList(response));
                             }
                         });
                         break;
@@ -114,6 +98,7 @@
                         break;
                 }
             }
+            window.onhashchange();
             ///ADD TO CART
             $(document).on('click', '.add', function (e) {
                 e.preventDefault();
@@ -124,6 +109,7 @@
                     dataType: 'json',
                     success: function () {
                         window.location.assign('#cart');
+                        //location.reload();
                     }
                 });
             });
@@ -136,7 +122,8 @@
                     type: 'get',
                     dataType: 'json',
                     success: function () {
-                        window.location.assign('#cart');
+                        //location.reload();
+                        window.location.assign('#');
                     }
                 });
             });
@@ -153,7 +140,21 @@
                     }
                 });
             });
-
+            //checkout
+            $(document).on('click', '.submit-order', function (e) {
+                var _token = $("input[name='_token']").val();
+                var name = $('#name').val();
+                var details = $('#details').val();
+                var comments = $('#comments').val();
+                $.ajax({
+                    url: '/checkout',
+                    type: 'POST',
+                    data: {_token: _token, name: name, details: details, comments: comments},
+                    success: function() {
+                        window.location.assign('#');
+                    }
+                });
+            });
             window.onhashchange();
         });
     </script>
@@ -169,19 +170,27 @@
     <a href="#products" class="button">Go to products</a>
     <a href="#login" class="button">Login</a>
 
-
 </div>
 
 <!-- The cart page -->
+<!-- The cart element where the products list is rendered -->
 <div class="page cart">
-    <!-- The cart element where the products list is rendered -->
     <table class="list"></table>
+    <form id="checkout-form">
+        {{csrf_field()}}
+        <div>
+            <input id="name" name="name" placeholder="Name">
 
-    <!-- A link to go to the index by changing the hash -->
-    <a href="#" class="button">Go to index</a>
-    <a href="#cart" class="button">Go to cart</a>
-    <a href="#products" class="button">Go to products</a>
-    <a href="#login" class="button">Login</a>
+            <input id="details" name="details" placeholder="Email">
+        </div>
+        <div>
+            <input id="comments" name="comments" placeholder="Comments">
+        </div>
+        <button class="submit-order" type="submit">Checkout</button>
+    </form>
+    <a href="#" class="button">Index</a>
+    <a href="#products" class="button">Products</a>
+
 </div>
 
 <div class="page products">

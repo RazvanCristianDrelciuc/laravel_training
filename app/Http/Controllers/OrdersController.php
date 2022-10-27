@@ -19,8 +19,7 @@ class OrdersController extends Controller
 
     public function show($id)
     {
-        $order = Order::find($id);
-        $items = Item::where('order_id', $id)->get();
-        return view('order', ['order' => $order, 'items' => $items]);
+        $order = Order::findOrFail($id);
+        return view('order', compact('order'));
     }
 }

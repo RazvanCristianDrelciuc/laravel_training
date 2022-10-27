@@ -19,10 +19,10 @@ class CheckoutMail extends Mailable
     public $order;
     public $items;
 
-    public function __construct($order, $items)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->items = $items;
+      //  $this->items = $items;
     }
 
     /**
@@ -30,9 +30,17 @@ class CheckoutMail extends Mailable
      *
      * @return $this
      */
+
     public function build()
     {
-        return $this->view('template')->with(['order' => $this->order,'items' => $this->items]);
-
+        $order = $this->order;
+        return $this->view('template', compact('order'));
     }
+    /*public function build()
+    {
+        return $this->view('template')->with(['order' => $this->order]);
+//        return $this->view('template')->with(['order' => $this->order,'items' => $this->items]);
+
+
+    }*/
 }

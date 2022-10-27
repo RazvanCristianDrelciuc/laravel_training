@@ -22,3 +22,4 @@ Route::get('/app', [App\Http\Controllers\IndexController::class, 'indexApp'])->n
 Route::get('/app-index', [App\Http\Controllers\IndexController::class, 'indexspa']);
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'index']);
 Route::get('/products', [App\Http\Controllers\ProductsController::class, 'index'])->name('products')->middleware('admin');
+Route::post('/checkout', [App\Http\Controllers\CartController::class, 'checkoutPost'])->name('checkout');
