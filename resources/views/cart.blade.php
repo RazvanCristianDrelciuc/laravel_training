@@ -18,7 +18,7 @@
                 <li>{{ ucfirst($product->price) }}</li>
                 <li>{{ ucfirst($product->image) }}</li>
                 <div class="removebutton">
-                    <a href="{{ route('removeFromCart',['id' => $product->id])  }}" name="remove">Remove</a>
+                    <a href="{{ route('cart.destroy',['id' => $product->id])  }}" name="remove">Remove</a>
                 </div>
             </ul>
         @empty

@@ -35,11 +35,11 @@
                     <!-- Left Side Of Navbar -->
                     <div class="nav">
                     <ul class="">
-                        <li><a href="/index">Index</a></li>
-                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="{{route('index')}}">Index</a></li>
+                        <li><a href="{{route('cart.index')}}">Cart</a></li>
                         @if  (Auth::user() && Auth::user()->is_admin == 1)
-                        <li><a href="/products">Products</a></li>
-                        <li><a href="/orders">Orders</a></li>
+                        <li><a href="{{route('products.index')}}">Products</a></li>
+                        <li><a href="{{route('orders')}}">Orders</a></li>
                         @endif
                     </ul>
                     </div>

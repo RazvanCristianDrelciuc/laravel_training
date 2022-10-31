@@ -16,12 +16,12 @@
                 <li>{{ ucfirst($product->price) }}</li>
                 <li>{{ ucfirst($product->image) }}</li>
                 <div class="addbutton">
-                    <a href="{{ route('addToCart',['id' => $product->id])  }}" name="add">Add</a>
+                    <a href="{{ route('cart.store',['id' => $product->id])  }}" name="add">Add</a>
                 </div>
             </ul>
         @empty
         @endforelse
-        <a href="/cart"> Go to Cart</a>
+        <a href="{{route('cart.index')}}"> Go to Cart</a>
     </div>
 
 @endsection

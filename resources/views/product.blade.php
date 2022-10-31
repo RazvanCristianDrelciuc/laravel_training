@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="container">
-        <form action="{{isset($product) ? route('update',['id' => $product->id]) : route('AddProduct')}}" method="post">
+        <form action="{{isset($product) ? route('product.update',['id' => $product->id]) : route('product.show')}}" method="post">
             @csrf
             @method('PUT')
             <div class="proditem">

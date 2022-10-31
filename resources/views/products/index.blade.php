@@ -17,16 +17,16 @@
                 <li>{{ ucfirst($product->price) }}</li>
                 <li>{{ ucfirst($product->image) }}</li>
                 <div class="removebutton">
-                    <a href="{{ route('deleteProduct',['id' => $product->id])  }}" name="remove">Remove Product</a>
+                    <a href="{{ route('product.destroy',['id' => $product->id])  }}" name="remove">Remove Product</a>
                 </div>
                 <div class="removebutton">
-                    <a href="{{ route('updateProduct',['id' => $product->id])  }}" name="remove">Update Product</a>
+                    <a href="{{ route('product.edit',['id' => $product->id])  }}" name="remove">Update Product</a>
                 </div>
             </ul>
         @empty
         @endforelse
         <div class="removebutton">
-            <a href="/AddProduct">Add Product</a>
+            <a href="{{route('product.create')}}">Add Product</a>
         </div>
     </div>
 
