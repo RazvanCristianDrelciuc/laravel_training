@@ -17,9 +17,12 @@
                 <li>{{ ucfirst($product->description) }}</li>
                 <li>{{ ucfirst($product->price) }}</li>
                 <li>{{ ucfirst($product->image) }}</li>
-                <div class="removebutton">
-                    <a href="{{ route('cart.destroy',['id' => $product->id])  }}" name="remove">Remove</a>
-                </div>
+                <form action="{{ route('cart.destroy',['id'=> $product->id]) }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit">{{ __('Delete') }}</button>
+                </form>
+
             </ul>
         @empty
         @endforelse
@@ -45,6 +48,6 @@
             <p>* required field</p>
         </form>
     </div>
-    <a href="/index"> Go to Index</a>
+    <a href="{{ route('index') }}"> Go to Index</a>
 
 @endsection

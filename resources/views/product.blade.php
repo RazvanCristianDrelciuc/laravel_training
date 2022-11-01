@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="container">
-        <form action="{{isset($product) ? route('product.update',['id' => $product->id]) : route('product.show')}}" method="post">
+        <form action="{{isset($product) ? route('product.update',['id' => $product->id]) : route('product.store')}}" method="post">
             @csrf
             @method('PUT')
             <div class="proditem">
@@ -38,6 +38,6 @@
             <p>* required field</p>
         </form>
     </div>
-    <a href="/index"> Go to Index</a>
+    <a href="{{ route('index') }}"> Go to Index</a>
 
 @endsection

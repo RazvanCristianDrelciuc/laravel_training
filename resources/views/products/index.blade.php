@@ -16,15 +16,21 @@
                 <li>{{ ucfirst($product->description) }}</li>
                 <li>{{ ucfirst($product->price) }}</li>
                 <li>{{ ucfirst($product->image) }}</li>
-                <div class="removebutton">
-                    <a href="{{ route('product.destroy',['id' => $product->id])  }}" name="remove">Remove Product</a>
-                </div>
-                <div class="removebutton">
-                    <a href="{{ route('product.edit',['id' => $product->id])  }}" name="remove">Update Product</a>
-                </div>
+                <form action="{{ route('products.edit', $product->id) }}" method="POST">
+                    @method('POST')
+                    @csrf
+                    <button type="submit">{{ __('Edit') }}</button>
+                </form>
+
+                <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit">{{ __('Delete') }}</button>
+                </form>
             </ul>
         @empty
         @endforelse
+
         <div class="removebutton">
             <a href="{{route('product.create')}}">Add Product</a>
         </div>

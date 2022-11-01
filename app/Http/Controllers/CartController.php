@@ -27,6 +27,4 @@ class CartController extends Controller
 
         return view('cart', ['products' => Product::whereIn('id', $productIds)->get()]);
     }
-
-
 }
