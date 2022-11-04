@@ -20,9 +20,8 @@ class CartController extends Controller
 
         (session('cart') ? $productIds = array_column(session()->get('cart'), 'product_id') : $productIds = []);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'products' => Product::whereIn('id', $productIds)->get(),]);
+        if ($request->expectsJson()) {
+            return response(Product::whereIn('id', $productIds)->get());
         }
 
         return view('cart', ['products' => Product::whereIn('id', $productIds)->get()]);

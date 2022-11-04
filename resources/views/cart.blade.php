@@ -9,7 +9,7 @@
             <?php $total += $product['price'];?>
             <div class="proditem">
                 <div class="prodimage">
-                    <img src="{{ asset('/images/'.$product->image) }}">
+                    <img src="{{ asset('/storage/images/'.$product->image) }}">
                 </div>
             </div>
             <ul>

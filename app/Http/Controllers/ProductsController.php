@@ -12,16 +12,15 @@ class ProductsController extends Controller
     {
         (session('cart') ? $productIds = array_column(session()->get('cart'), 'product_id') : $productIds = []);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'products' => Product::whereIn('id', $productIds)->get(),
-            ]);
+        if ($request->expectsJson()) {
+            return response(Product::whereNotIn('id', $productIds)->get());
         }
+
 
         return view('index.index', ['products' => Product::whereNotIn('id', $productIds)->get()]);
     }
 
-    public function create(Request $request, $id)
+    public function store(Request $request, $id)
     {
         $product = Product::find($id);
         $product = ['product_id' => $id];
@@ -30,17 +29,29 @@ class ProductsController extends Controller
             $request->session()->push('cart', $product);
         }
 
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'product added to cart']);
+        }
         return redirect()->route('index');
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         foreach (session('cart') as $key => $val) {
             if ($val['product_id'] == $id) {
                 session()->pull('cart.' . $key);
             }
         }
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'has been removed to the Cart']);
+        }
+
         return redirect()->route('cart.index');
     }
 
+    public function indexApp()
+    {
+        return view('appp');
+    }
 }

@@ -4,10 +4,12 @@
     <div class="container">
         <form action="{{isset($product) ? route('product.update',['id' => $product->id]) : route('product.store')}}" method="post">
             @csrf
-            @method('PUT')
+            @isset ($product)
+                @method('PUT')
+            @endisset
             <div class="proditem">
                 <div class="prodimage">
-                    <img src="{{ isset($product) ? asset('/images/'.$product->image) : '' }}">
+                    <img src="{{ isset($product) ? asset('/storage/images/'.$product->image) : '' }}">
                 </div>
             </div>
             <label>Product Title</label>

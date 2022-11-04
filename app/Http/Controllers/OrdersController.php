@@ -9,17 +9,27 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $orders = Order::all();
+
+        if ($request->expectsJson()) {
+            return response($orders);
+        }
+
         return view('orders', [
             'orders' => $orders,
         ]);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::find($id);
+
+        if ($request->expectsJson()) {
+            return response()->json($order);
+        }
+
         return view('order', compact('order'));
     }
 }

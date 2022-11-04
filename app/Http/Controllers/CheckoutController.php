@@ -35,6 +35,10 @@ class CheckoutController extends Controller
 
         session()->forget('cart');
 
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'checkout complete']);
+        }
+
         return redirect()->route('index');
     }
 }

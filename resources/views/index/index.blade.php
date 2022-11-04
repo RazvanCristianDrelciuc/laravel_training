@@ -7,7 +7,7 @@
         @forelse($products as $product)
             <div class="proditem">
                 <div class="prodimage">
-                    <img src="{{ asset('/images/'.$product->image) }}">
+                    <img src="{{ asset('/storage/images/'.$product->image) }}">
                 </div>
             </div>
             <ul>
@@ -15,9 +15,11 @@
                 <li>{{ ucfirst($product->description) }}</li>
                 <li>{{ ucfirst($product->price) }}</li>
                 <li>{{ ucfirst($product->image) }}</li>
-                <div class="addbutton">
-                    <a href="{{ route('cart.store',['id' => $product->id])  }}" name="add">Add</a>
-                </div>
+                <form action="{{ route('cart.store', $product->id) }}" method="POST">
+                    @method('POST')
+                    @csrf
+                    <button type="submit">{{ __('Add') }}</button>
+                </form>
             </ul>
         @empty
         @endforelse

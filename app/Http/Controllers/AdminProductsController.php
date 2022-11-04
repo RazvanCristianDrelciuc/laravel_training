@@ -19,8 +19,11 @@ class AdminProductsController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'has been created with succes']);
+        }
         return view('product');
     }
 
@@ -30,17 +33,48 @@ class AdminProductsController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required',
+
         ]);
 
         $product = Product::find($id);
         $product->fill(['title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
-            'image' => $request->input('image')]);
+              'image' => $request->input('image')
+           // 'image'=>$this->uploadImage($request->image)
+        ]);
         $product->update();
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'has been updated with succes']);
+        }
 
         return redirect()->route('products.index');
     }
+//    public function update(Request $request, $id)
+//    {
+//        $validatedData = $request->validate([
+//            'title' => 'required',
+//            'description' => 'required',
+//            'price' => 'required',
+//            'image' => 'image|mimes:jpeg,png,jpg|max:10240',
+//        ]);
+//        $product = Product::findOrFail($id);
+//        $product->fill($validatedData);
+//
+//        if ($request->has('image')) {
+//            Storage::disk('public')->delete($product->image);
+//            $product->image = $this->uploadImage($request->image);
+//        }
+//
+//        $product->update();
+//
+//        if ($request->expectsJson()) {
+//            return response()->json(['message' => 'The product has been updated with success!']);
+//        }
+//
+//        return redirect()->route('products.index');
+//    }
 
     public function destroy($id, Request $request)
     {
@@ -53,6 +87,11 @@ class AdminProductsController extends Controller
                 }
             }
         }
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'has been deleted']);
+        }
+
         return redirect()->route('products.index');
     }
 
@@ -68,21 +107,31 @@ class AdminProductsController extends Controller
         $product->fill(['title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
-            'image' => $request->input('image')]);
+        //    'image' => $request->input('image')
+            'image'=>$this->uploadImage($request->image)
+        ]);
         $product->save();
+
+        return redirect()->route('products.index');
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'The product has been added with success!']);
+        }
 
         return redirect()->route('products.index');
     }
 
+    function uploadImage($image)
+    {
+        $fileExt = $image->extension();
+        $imageName = hash('sha1', $image);
+        $image->move(storage_path('app/public/images/'), $imageName . '.' . $fileExt);
+
+        return $imageName . '.' . $fileExt;
+    }
+
     public function edit($id, Request $request)
     {
-        if (!$id) {
-            if ($request->expectJson()) {
-                return response()->json('product to edit dose not exist');
-            } else {
-                return redirect()->back();
-            }
-        }
 
         $product = Product::find($id);
 
