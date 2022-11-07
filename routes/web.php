@@ -27,6 +27,14 @@ Route::middleware(['admin'])->group(function () {
 
 Route::get('/app', [App\Http\Controllers\ProductsController::class, 'indexApp']);
 
+Route::get('check-csrf', function() {
+    return response()->json(csrf_token());
+});
+
+//Route::get('/', function() {
+//    return view('appp');
+//})->name('home');
+
 
 Auth::routes();
 

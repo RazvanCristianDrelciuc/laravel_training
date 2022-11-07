@@ -29,6 +29,8 @@ class AdminProductsController extends Controller
 
     public function update(Request $request, $id)
     {
+        $product = Product::findOrFail($id);
+
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -36,12 +38,11 @@ class AdminProductsController extends Controller
 
         ]);
 
-        $product = Product::find($id);
         $product->fill(['title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
-              'image' => $request->input('image')
-           // 'image'=>$this->uploadImage($request->image)
+              //'image' => $request->input('image')
+            'image'=>$this->uploadImage($request->image),
         ]);
         $product->update();
 

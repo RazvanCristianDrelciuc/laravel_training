@@ -10,7 +10,6 @@
     <!-- Load the jQuery JS library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <!-- Custom JS script -->
     <script type="text/javascript">
 
         $.ajaxSetup({
@@ -18,7 +17,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
 
         $(document).ready(function () {
             function renderList(products) {
@@ -73,6 +71,14 @@
                 return html;
             }
 
+            function setToken(response) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': response
+                    }
+                });
+            }
+
             function renderOrders(response) {
                 html = '<div>';
 
@@ -92,12 +98,12 @@
             function renderOrder(response) {
                 html = '<div>';
                 let order = response;
-                // html += [
-                //     '<h4>Customer: ' + order.id + '</h4>',
-                //     '<h4>Email: ' + order.user_name + '</h4>',
-                //     '<h4>Comments: ' + order.details + '</h4>',
-                //     '<h4>Placed: ' + order.price + '</h4>',
-                // ].join('');
+                html += [
+                    '<h4>Customer Id: ' + order.id + '</h4>',
+                    '<h4>User Name: ' + order.user_name + '</h4>',
+                    '<h4>Details: ' + order.details + '</h4>',
+                    '<h4>Total Price: ' + order.price + '</h4>',
+                ].join('');
 
                 $.each(response.product, function (key, product) {
                     html += [
@@ -158,17 +164,41 @@
                             }
                         });
 
-
                         break;
                     case '#product':
                         $.ajax('/product/create', {
                             type: 'GET',
                             dataType: 'json',
                             success: function () {
-                                $('.product').show();
+                                if (sessionStorage.getItem("product-id") !== null) {
+                                    let title = sessionStorage.getItem("title");
+                                    let description = sessionStorage.getItem("description");
+                                    let price = sessionStorage.getItem("price");
+                                    let image = sessionStorage.getItem("image");
+                                    let productId = sessionStorage.getItem("product-id");
+                                    $('#title').val(title);
+                                    $('#description').val(description);
+                                    // $('#image').val(image);
+                                    //$('#image')[0].files[0].val(image);
+
+                                    if ($('#image').get(0).files.length !== 0) {
+                                        $('#image')[0].files[0].name.val(image);
+                                    }
+                                    $('#price').val(price);
+                                    $('#product-id').val(productId);
+                                    $('.product-create').hide();
+                                    $('.product-update').show();
+                                    $('.product').show();
+                                } else {
+                                    $('#product-id').val(33);
+                                    $('.product-create').show();
+                                    $('.product-update').hide();
+                                    $('.product').show();
+                                }
                             }
                         });
                         break;
+
                     default:
                         $.ajax({
                             url: '/',
@@ -182,6 +212,38 @@
                         break;
                 }
             }
+            //login
+            $(document).on('click', '.submit-login', function (e) {
+
+                e.preventDefault();
+
+                let username = $('#username').val();
+                let password = $('#password').val();
+                $.ajax('/login', {
+                    type: 'POST',
+                    data: {email: username, password: password},
+                    success: function () {
+                        $('#username').val('');
+                        $('#password').val('');
+                        $('#username-error').text('');
+                        $('#password-error').text('');
+                    },
+                    error: function (xhr) {
+                        var err = JSON.parse(xhr.responseText);
+                        $('#username-error').text(err.errors.email);
+                        $('#password-error').text(err.errors.password);
+                    }
+                })
+                    .then(() => {
+                        $.ajax('check-csrf', {
+                            type: 'GET',
+                            success: function (response) {
+                                setToken(response);
+                                window.location.assign('#products');
+                            }
+                        })
+                    })
+            });
 
             // Add To Cart
             $(document).on('click', '.add', function (e) {
@@ -265,11 +327,13 @@
             //Edit Product
             $(document).on('click', '.edit', function (e) {
                 e.preventDefault();
+
                 var id = $(this).data('id');
 
                 $.ajax('/products/edit/' + id + '', {
                     type: 'POST',
                     dataType: 'json',
+
                     success: function (response) {
                         $('.product-create').hide();
                         $('.product-update').show();
@@ -282,8 +346,13 @@
                         $('#description-error').hide();
                         $('#price-error').hide();
                         $('#image-error').hide();
+                        sessionStorage.setItem("title", $('#title').val());
+                        sessionStorage.setItem("description", $('#description').val());
+                        sessionStorage.setItem("price", $('#price').val());
+                        sessionStorage.setItem("image", $('#image').text());
+                        sessionStorage.setItem("product-id", $('#product-id').val());
                         window.location.assign('#product');
-                    }
+                    },
                 });
             });
 
@@ -292,19 +361,30 @@
                 e.preventDefault();
                 $('.product-create').show();
                 $('.product-update').hide();
+
+                sessionStorage.removeItem("title", $('#title').val());
+                sessionStorage.removeItem("description", $('#description').val());
+                sessionStorage.removeItem("price", $('#price').val());
+                sessionStorage.removeItem("image", $('#image').text());
+                sessionStorage.removeItem("product-id", $('#product-id').val());
+
                 $('#product-id').val(33);
                 $('#title').val('ssssss');
                 $('#description').val('');
                 $('#price').val('');
                 $('#image').text('');
-                console.log( $('#product-id').val());
                 window.location.assign('#product');
             });
 
             //Product update/ Product Add
             $('#product-form').on('submit', function (e) {
                 console.log($('#product-id').val());
-                if ($('#product-id') .val() != 33) {
+
+                $('#title-error').text('');
+                $('#description-error').text('');
+                $('#price-error').text('');
+
+                if ($('#product-id').val() != 33) {
                     e.preventDefault();
                     let id = $('input[id=product-id]').val();
                     let data = new FormData();
@@ -312,31 +392,32 @@
                     data.append('title', $('input[id=title]').val());
                     data.append('description', $('input[id=description]').val());
                     data.append('price', $('input[id=price]').val());
-                    console.log(data.append('title', $('input[id=title]').val()));
+                    data.append('_method', 'PUT');
+
                     if ($('#image').get(0).files.length !== 0) {
-                        data.append('image', $('#image')[0].files[0]);
+                        data.append('image', $('#image')[0].files[0], $('#image')[0].files[0].name);
                     }
-                    console.log(data);
                     $.ajax({
                         url: '/products/update/' + id + '',
-                        type: 'PUT',
+                        type: 'POST',
                         data: data,
-                        dataType: 'json',
                         contentType: false,
                         processData: false,
-                        enctype: 'multipart/form-data',
-                        cache: false,
-                        headers:{
-                            method: "POST",
-
-                        },
                         success: function () {
                             alert('form update was submitetd ')
+                            sessionStorage.removeItem("product-id");
                             window.location.assign('#products');
                         },
-                        error: function () {
-                            console.log('error');
-                            window.location.assign('#products');
+                        error: function (xhr) {
+                            let err = JSON.parse(xhr.responseText);
+                            $('#title-error').show();
+                            $('#title-error').text(err.errors.title);
+                            $('#description-error').show();
+                            $('#description-error').text(err.errors.description);
+                            $('#price-error').show();
+                            $('#price-error').text(err.errors.price);
+                            $('#image-error').show();
+                            $('#image-error').text(err.errors.image);
                         }
                     });
                 } else {
@@ -345,9 +426,6 @@
                     data.append('title', $('input[id=title]').val());
                     data.append('description', $('input[id=description]').val());
                     data.append('price', $('input[id=price]').val());
-
-                    console.log(data.append('title', $('input[id=title]').val()));
-
                     if ($('#image').get(0).files.length !== 0) {
                         data.append('image', $('#image')[0].files[0]);
                     }
@@ -360,12 +438,20 @@
                         enctype: 'multipart/form-data',
                         cache: false,
                         success: function () {
-                            // $('.product-form')[0].reset();
+                            $('#product-form')[0].reset();
                             alert('form was submitted');
                             window.location.assign('#products');
                         },
-                        error: function () {
-                            console.log('eroare');
+                        error: function (xhr) {
+                            let err = JSON.parse(xhr.responseText);
+                            $('#title-error').show();
+                            $('#title-error').text(err.errors.title);
+                            $('#description-error').show();
+                            $('#description-error').text(err.errors.description);
+                            $('#price-error').show();
+                            $('#price-error').text(err.errors.price);
+                            $('#image-error').show();
+                            $('#image-error').text(err.errors.image);
                         }
                     });
                 }
@@ -375,19 +461,14 @@
     </script>
 </head>
 <body>
-<!-- The index page -->
 <div class="page index">
-    <!-- The index element where the products list is rendered -->
     <table class="list"></table>
 
-    <!-- A link to go to the cart by changing the hash -->
     <a href="#cart" class="button">Go to cart</a>
     <a href="#products" class="button">Go to products</a>
     <a href="#login" class="button">Login</a>
 </div>
 
-<!-- The cart page -->
-<!-- The cart element where the products list is rendered -->
 <div class="page cart">
     <table class="list"></table>
     <form id="checkout-form">
@@ -414,7 +495,6 @@
         <a href="#cart"> {{__('cart')}} </a>
         <a href="#index"> {{__('index')}} </a>
         <a href="#orders"> {{__('Orders')}} </a>
-
     </div>
 </div>
 </div>
@@ -488,7 +568,6 @@
 
     <a href="#">{{ __('Go to Home') }}</a>
 </div>
-
 
 </body>
 </html>
