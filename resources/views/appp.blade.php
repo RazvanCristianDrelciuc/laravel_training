@@ -31,19 +31,6 @@
 
                 ].join('');
 
-                if (window.location.hash === '#products') {
-                    html += [
-                        '<th colspan="2"> Action </th>',
-                        '</tr>'
-                    ].join('');
-                } else {
-                    html += [
-                        '<th> Action </th>',
-                        '</tr>',
-                        '</thead>'
-                    ].join('');
-                }
-
                 $.each(products, function (key, product) {
                     html += [
                         '<tr>',
@@ -510,9 +497,9 @@
 <div class="page products">
     <table class="list"></table>
     <div>
-        <a href="#product" class="add-product"> {{__('Add')}} </a>
-        <a href="#cart"> {{__('cart')}} </a>
-        <a href="#index"> {{__('index')}} </a>
+        <a href="#product" class="add-product"> {{__('Add Product')}} </a>
+        <a href="#cart"> {{__('Cart')}} </a>
+        <a href="#index"> {{__('Index')}} </a>
         <a href="#orders"> {{__('Orders')}} </a>
     </div>
 </div>
@@ -549,6 +536,7 @@
 
     <div>
         <a href="#products"> {{ __('Products') }} </a>
+
     </div>
 </div>
 <div class="page orders">
@@ -556,6 +544,8 @@
 
     <div>
         <a href="#products"> {{ __('Products') }} </a>
+        <a href="#cart"> {{__('Cart')}} </a>
+        <a href="#index"> {{__('Index')}} </a>
     </div>
 </div>
 

@@ -94,9 +94,21 @@
 }
 body {
     display: flex;
-
-
     flex-direction: column;
 }
 
 
+table {
+    border-collapse: separate;
+    border-spacing: 50px 0;
+}
+
+td {
+    text-align: center;
+
+    padding: 10px 0;
+}
+
+a {
+    padding: 10px 10px;
+}
