@@ -89,6 +89,14 @@
     background-color: rgb(216, 241, 161);
     flex-direction: column;
     margin-top: 30px;
+
+
+}
+body {
+    display: flex;
+
+
+    flex-direction: column;
 }
 
-.pa
+

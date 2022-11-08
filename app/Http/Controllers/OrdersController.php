@@ -14,7 +14,7 @@ class OrdersController extends Controller
         $orders = Order::all();
 
         if ($request->expectsJson()) {
-            return response($orders);
+            return response()->json($orders);
         }
 
         return view('orders', [
@@ -24,12 +24,12 @@ class OrdersController extends Controller
 
     public function show($id, Request $request)
     {
-        $order = Order::find($id);
+        $order = Order::findOrFail($id);
 
         if ($request->expectsJson()) {
-            return response()->json($order);
+            return response()->json(['orders'=> $order, 'products' => $order->products]);
         }
 
-        return view('order', compact('order'));
+        return view('order', ['order'=>$order]);
     }
 }

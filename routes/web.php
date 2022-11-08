@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 
-
-
 Route::get('/', [App\Http\Controllers\ProductsController::class, 'index'])->name('index');
 
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
@@ -21,8 +19,8 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/products/edit/{id}', [App\Http\Controllers\AdminProductsController::class, 'edit'])->name('products.edit');
     Route::put('/products/update/{id}', [App\Http\Controllers\AdminProductsController::class, 'update'])->name('product.update');
 
-    Route::get('/orders', [App\Http\Controllers\OrdersController::class, 'index'])->name('orders.index')->middleware('admin');
-    Route::get('/order/{id}', [App\Http\Controllers\OrdersController::class, 'show'])->name('order.show')->middleware('admin');
+    Route::get('/orders', [App\Http\Controllers\OrdersController::class, 'index'])->name('orders.index');
+    Route::post('/order/{id}', [App\Http\Controllers\OrdersController::class, 'show'])->name('order.show');
 });
 
 Route::get('/app', [App\Http\Controllers\ProductsController::class, 'indexApp']);

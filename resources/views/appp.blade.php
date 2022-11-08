@@ -97,15 +97,21 @@
 
             function renderOrder(response) {
                 html = '<div>';
-                let order = response;
+                let orders = response.orders;
+                console.log(orders);
+
                 html += [
-                    '<h4>Customer Id: ' + order.id + '</h4>',
-                    '<h4>User Name: ' + order.user_name + '</h4>',
-                    '<h4>Details: ' + order.details + '</h4>',
-                    '<h4>Total Price: ' + order.price + '</h4>',
+                    '<h4><strong>Customer Id:</strong> ' + orders.id + '</h4>',
+                    '<h4>User Name: ' + orders.user_name + '</h4>',
+                    '<h4>Details: ' + orders.details + '</h4>',
+                    '<h4>Total Price: ' + orders.price + '</h4>',
+                    '<br><br>',
                 ].join('');
 
-                $.each(response.product, function (key, product) {
+                let products = response.products;
+                console.log(response.title);
+                $.each(products, function (key, product) {
+                    console.log(product);
                     html += [
                         '<h4>Title: ' + product.title + '</h4>',
                         '<h4>Description: ' + product.description + '</h4>',
@@ -126,14 +132,21 @@
                 switch (window.location.hash) {
                     case '#cart':
                         // Show the cart page
+                        $('#name-error').show();
+                        $('#details-error').show();
                         $('.cart').show();
                         // Load the cart products from the server
                         $.ajax('/cart', {
                             dataType: 'json',
                             method: 'GET',
                             success: function (response) {
-                                // Render the products in the cart list
-                                $('.cart .list').html(renderList(response));
+                                if (Object.entries(response).length === 0) {
+                                    $('.cart .list').html('<th>Your Cart Is Empty!</th>');
+                                    $('#checkout-form').hide();
+                                } else {
+                                    $('#checkout-form').show();
+                                    $('.cart .list').html(renderList(response));
+                                }
                             }
                         });
                         break;
@@ -287,24 +300,27 @@
 
             //Checkout
             $(document).on('click', '.submit-order', function (e) {
-                var _token = $("input[name='_token']").val();
-                var name = $('#name').val();
-                var details = $('#details').val();
-                var comments = $('#comments').val();
+                e.preventDefault();
+                let _token = $("input[name='_token']").val();
+                let name = $('#name').val();
+                let details = $('#details').val();
+                let comments = $('#comments').val();
                 $.ajax({
                     url: '/checkout',
                     type: 'POST',
                     data: {name: name, details: details, comments: comments},
                     success: function () {
-                        if ($.isEmptyObject(data.errors)) {
-                            $('#customer').val('');
-                            $('#email').val('');
-                            $('#comments').val('');
-                            $('#customer-error').hide();
-                            $('#email-error').hide();
-                            window.location.assign('#');
-                        }
+                        $('#name').val('');
+                        $('#details').val('');
+                        $('#comments').val('');
+                        $('#name-error').hide();
+                        $('#details-error').hide();
                         window.location.assign('#');
+                    },
+                    error: function (xhr) {
+                        var err = JSON.parse(xhr.responseText);
+                        $('#name-error').text(err.errors.name);
+                        $('#details-error').text(err.errors.details);
                     }
                 });
             });
@@ -312,14 +328,15 @@
             //Order View
             $(document).on('click', '.order-details', function (e) {
                 e.preventDefault();
-                var id = $(this).data('id');
+                let id = $(this).data('id');
 
                 $.ajax('/order/' + id + '', {
-                    type: 'GET',
+                    type: 'POST',
                     dataType: 'json',
                     success: function (response) {
-                        window.location.assign('#order');
                         $('.order .list').html(renderOrder(response));
+                        window.location.assign('#order');
+
                     }
                 });
             });
@@ -369,7 +386,7 @@
                 sessionStorage.removeItem("product-id", $('#product-id').val());
 
                 $('#product-id').val(33);
-                $('#title').val('ssssss');
+                $('#title').val('');
                 $('#description').val('');
                 $('#price').val('');
                 $('#image').text('');
@@ -472,14 +489,16 @@
 <div class="page cart">
     <table class="list"></table>
     <form id="checkout-form">
-        {{csrf_field()}}
+        {{--        {{csrf_field()}}--}}
         <div>
             <input id="name" name="name" placeholder="Name">
-
+            <p id="name-error"></p>
             <input id="details" name="details" placeholder="Email">
+            <p id="details-error"></p>
         </div>
         <div>
             <input id="comments" name="comments" placeholder="Comments">
+            <p id="comments-error"></p>
         </div>
         <button class="submit-order" type="submit">Checkout</button>
     </form>
