@@ -16,7 +16,6 @@ class ProductsController extends Controller
             return response(Product::whereNotIn('id', $productIds)->get());
         }
 
-
         return view('index.index', ['products' => Product::whereNotIn('id', $productIds)->get()]);
     }
 
@@ -50,8 +49,8 @@ class ProductsController extends Controller
         return redirect()->route('cart.index');
     }
 
-    public function indexApp()
+    public function main()
     {
-        return view('appp');
+        return view('main');
     }
 }

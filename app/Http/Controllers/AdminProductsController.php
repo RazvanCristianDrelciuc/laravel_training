@@ -41,7 +41,6 @@ class AdminProductsController extends Controller
         $product->fill(['title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
-              //'image' => $request->input('image')
             'image'=>$this->uploadImage($request->image),
         ]);
         $product->update();
@@ -52,30 +51,6 @@ class AdminProductsController extends Controller
 
         return redirect()->route('products.index');
     }
-//    public function update(Request $request, $id)
-//    {
-//        $validatedData = $request->validate([
-//            'title' => 'required',
-//            'description' => 'required',
-//            'price' => 'required',
-//            'image' => 'image|mimes:jpeg,png,jpg|max:10240',
-//        ]);
-//        $product = Product::findOrFail($id);
-//        $product->fill($validatedData);
-//
-//        if ($request->has('image')) {
-//            Storage::disk('public')->delete($product->image);
-//            $product->image = $this->uploadImage($request->image);
-//        }
-//
-//        $product->update();
-//
-//        if ($request->expectsJson()) {
-//            return response()->json(['message' => 'The product has been updated with success!']);
-//        }
-//
-//        return redirect()->route('products.index');
-//    }
 
     public function destroy($id, Request $request)
     {

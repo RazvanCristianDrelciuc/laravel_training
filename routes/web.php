@@ -23,15 +23,15 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/order/{id}', [App\Http\Controllers\OrdersController::class, 'show'])->name('order.show');
 });
 
-Route::get('/app', [App\Http\Controllers\ProductsController::class, 'indexApp']);
+Route::get('/main', [App\Http\Controllers\ProductsController::class, 'main']);
 
 Route::get('check-csrf', function() {
     return response()->json(csrf_token());
 });
 
-//Route::get('/', function() {
-//    return view('appp');
-//})->name('home');
+Route::get('/', function() {
+    return view('main');
+})->name('home');
 
 
 Auth::routes();

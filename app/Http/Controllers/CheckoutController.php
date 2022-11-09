@@ -35,9 +35,9 @@ class CheckoutController extends Controller
 
         session()->forget('cart');
 
-//        if ($request->expectsJson()) {
-//            return response()->json(['message' => 'Your order has been received and an E-mail has been sent!']);
-//        }
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Your order has been received and an E-mail has been sent!']);
+        }
 
         return redirect()->route('index');
     }

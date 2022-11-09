@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url('style.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title><?= __('Shop') ?></title>
-    <!-- Load the jQuery JS library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script type="text/javascript">
@@ -23,10 +22,10 @@
                 html = [
                     '<div class="container">',
                     '<tr class=" ">',
-                    '<th>Title</th>',
-                    '<th>Description</th>',
-                    '<th>Price</th>',
-                    '<th>Image</th>',
+                    '<th>{{ __('Title') }}</th>',
+                    '<th>{{ __('Description') }}</th>',
+                    '<th>{{ __('Price') }}</th>',
+                    '<th>{{ __('Image') }}</th>',
                     '</tr>',
 
                 ].join('');
@@ -44,14 +43,14 @@
 
                     switch (window.location.hash) {
                         case '#cart':
-                            html += '<td><button class="remove" data-id="' + product.id + '"> Remove from Cart</button></td>';
+                            html += '<td><button class="remove" data-id="' + product.id + '"> {{ __('Remove from cart') }}</button></td>';
                             break;
                         case '#products':
-                            html += '<td><button class="edit" data-id="' + product.id + '"> EDIT product</button></td>';
-                            html += '<td><button class="delete" data-id="' + product.id + '"> DELETE product</button></td>';
+                            html += '<td><button class="edit" data-id="' + product.id + '"> {{ __('Edit product') }}</button></td>';
+                            html += '<td><button class="delete" data-id="' + product.id + '"> {{ __('Delete Product') }}</button></td>';
                             break;
                         default:
-                            html += '<td><button class="add" data-id="' + product.id + '"> Add to Cart</button></td>';
+                            html += '<td><button class="add" data-id="' + product.id + '"> {{ __('Add To Cart') }}</button></td>';
                             break;
                     }
                 });
@@ -71,9 +70,9 @@
 
                 $.each(response, function (key, orders) {
                     html += [
-                        '<h4>Comments: ' + orders.user_name + '</h4>',
-                        '<h4>Placed: ' + orders.details + '</h4>',
-                        '<h4>Total:' + orders.price + '</h4>',
+                        '<h4>{{ __('Comments ') }} ' + orders.user_name + '</h4>',
+                        '<h4>{{ __('Details ') }}' + orders.details + '</h4>',
+                        '<h4>{{ __('Total ') }}' + orders.price + '</h4>',
                         '<a class="order-details" href="#order" data-id="' + orders.id + '">View Order</a>',
                     ].join('');
                 });
@@ -85,24 +84,20 @@
             function renderOrder(response) {
                 html = '<div>';
                 let orders = response.orders;
-                console.log(orders);
-
                 html += [
-                    '<h4><strong>Customer Id:</strong> ' + orders.id + '</h4>',
-                    '<h4>User Name: ' + orders.user_name + '</h4>',
-                    '<h4>Details: ' + orders.details + '</h4>',
-                    '<h4>Total Price: ' + orders.price + '</h4>',
+                    '<h4><strong>{{ __('Customer Id ') }}</strong> ' + orders.id + '</h4>',
+                    '<h4>{{ __('User Name ') }} ' + orders.user_name + '</h4>',
+                    '<h4>{{ __('Details ') }} ' + orders.details + '</h4>',
+                    '<h4>{{ __('Total Price ') }} ' + orders.price + '</h4>',
                     '<br><br>',
                 ].join('');
 
                 let products = response.products;
-                console.log(response.title);
                 $.each(products, function (key, product) {
-                    console.log(product);
                     html += [
-                        '<h4>Title: ' + product.title + '</h4>',
-                        '<h4>Description: ' + product.description + '</h4>',
-                        '<h4>Price: ' + product.price + '</h4>',
+                        '<h4>{{ __('Title ') }}: ' + product.title + '</h4>',
+                        '<h4>{{ __('Description ') }}: ' + product.description + '</h4>',
+                        '<h4>{{ __('Price ') }}: ' + product.price + '</h4>',
                         '<img src="storage/images/' + product.image + '" style="width: 100px; height: 100px;" data-image="' + product.image + '">',
                     ].join('');
                 });
@@ -113,22 +108,18 @@
 
 
             window.onhashchange = function () {
-                // First hide all the pages
                 $('.page').hide();
 
                 switch (window.location.hash) {
                     case '#cart':
-                        // Show the cart page
                         $('#name-error').show();
                         $('#details-error').show();
-                        $('.cart').show();
-                        // Load the cart products from the server
                         $.ajax('/cart', {
                             dataType: 'json',
                             method: 'GET',
                             success: function (response) {
                                 if (Object.entries(response).length === 0) {
-                                    $('.cart .list').html('<th>Your Cart Is Empty!</th>');
+                                    $('.cart .list').html('<th>{{ __('Your cart is Empty!') }}</th>');
                                     $('#checkout-form').hide();
                                 } else {
                                     $('#checkout-form').show();
@@ -136,9 +127,9 @@
                                 }
                             }
                         });
+                        $('.cart').show();
                         break;
                     case '#orders':
-                        $('.orders').show();
                         $.ajax('/orders', {
                             dataType: 'json',
                             method: 'GET',
@@ -146,6 +137,7 @@
                                 $('.orders .list').html(renderOrders(response));
                             }
                         });
+                        $('.orders').show();
                         break;
                     case '#order':
                         $('.order').show();
@@ -159,10 +151,10 @@
                             type: 'GET',
                             dataType: 'json',
                             success: function (response) {
-                                $('.products').show();
                                 $('.products .list').html(renderList(response));
                             }
                         });
+                        $('.products').show();
 
                         break;
                     case '#product':
@@ -178,9 +170,6 @@
                                     let productId = sessionStorage.getItem("product-id");
                                     $('#title').val(title);
                                     $('#description').val(description);
-                                    // $('#image').val(image);
-                                    //$('#image')[0].files[0].val(image);
-
                                     if ($('#image').get(0).files.length !== 0) {
                                         $('#image')[0].files[0].name.val(image);
                                     }
@@ -188,15 +177,14 @@
                                     $('#product-id').val(productId);
                                     $('.product-create').hide();
                                     $('.product-update').show();
-                                    $('.product').show();
                                 } else {
-                                    $('#product-id').val(33);
+                                    $('#product-id').val('');
                                     $('.product-create').show();
                                     $('.product-update').hide();
-                                    $('.product').show();
                                 }
                             }
                         });
+                        $('.product').show();
                         break;
 
                     default:
@@ -360,7 +348,7 @@
                 });
             });
 
-            //
+
             $(document).on('click', '.add-product', function (e) {
                 e.preventDefault();
                 $('.product-create').show();
@@ -372,7 +360,7 @@
                 sessionStorage.removeItem("image", $('#image').text());
                 sessionStorage.removeItem("product-id", $('#product-id').val());
 
-                $('#product-id').val(33);
+                $('#product-id').val('');
                 $('#title').val('');
                 $('#description').val('');
                 $('#price').val('');
@@ -380,15 +368,14 @@
                 window.location.assign('#product');
             });
 
-            //Product update/ Product Add
+            //Product update/ Product add
             $('#product-form').on('submit', function (e) {
-                console.log($('#product-id').val());
 
                 $('#title-error').text('');
                 $('#description-error').text('');
                 $('#price-error').text('');
 
-                if ($('#product-id').val() != 33) {
+                if ($('#product-id').val() != '') {
                     e.preventDefault();
                     let id = $('input[id=product-id]').val();
                     let data = new FormData();
@@ -468,60 +455,57 @@
 <div class="page index">
     <table class="list"></table>
 
-    <a href="#cart" class="button">Go to cart</a>
-    <a href="#products" class="button">Go to products</a>
-    <a href="#login" class="button">Login</a>
+    <a href="#cart" class="button">{{__('Cart')}}</a>
+    <a href="#products" class="button">{{ __('Go to Products') }}</a>
+    <a href="#login" class="button">{{ __('Login') }}</a>
 </div>
 
 <div class="page cart">
     <table class="list"></table>
     <form id="checkout-form">
-        {{--        {{csrf_field()}}--}}
         <div>
-            <input id="name" name="name" placeholder="Name">
+            <input id="name" name="name" placeholder="{{ __('Name') }}">
             <p id="name-error"></p>
-            <input id="details" name="details" placeholder="Email">
+            <input id="details" name="details" placeholder="{{ __('Email') }}">
             <p id="details-error"></p>
         </div>
         <div>
-            <input id="comments" name="comments" placeholder="Comments">
+            <input id="comments" name="comments" placeholder="{{ __('Comments') }}">
             <p id="comments-error"></p>
         </div>
-        <button class="submit-order" type="submit">Checkout</button>
+        <button class="submit-order" type="submit">{{__('Checkout') }}</button>
     </form>
-    <a href="#" class="button">Index</a>
-    <a href="#products" class="button">Products</a>
-
+    <a href="#" class="button">{{__('Index')}}</a>
+    <a href="#products" class="button">{{ __('Products') }}</a>
 </div>
 
 <div class="page products">
     <table class="list"></table>
     <div>
-        <a href="#product" class="add-product"> {{__('Add Product')}} </a>
-        <a href="#cart"> {{__('Cart')}} </a>
-        <a href="#index"> {{__('Index')}} </a>
-        <a href="#orders"> {{__('Orders')}} </a>
+        <a href="#product" class="add-product"> {{__('Add Product') }} </a>
+        <a href="#cart"> {{__('Cart') }} </a>
+        <a href="#index"> {{__('Index') }} </a>
+        <a href="#orders"> {{__('Orders') }} </a>
     </div>
 </div>
 </div>
 
 <div class="page product">
-
     <form id="product-form" enctype="multipart/form-data">
         <input type="hidden" id="product-id" value="">
 
         <div>
-            <input type="text" id="title" placeholder=" Enter product name " value="">
+            <input type="text" id="title" placeholder="{{ __('Enter roduct name') }}" value="">
             <p id="title-error"></p>
         </div>
 
         <div>
-            <input type="text" id="description" placeholder="Enter product description" value="">
+            <input type="text" id="description" placeholder="{{ __('Enter product description') }}" value="">
             <p id="description-error"></p>
         </div>
 
         <div>
-            <input type="number" id="price" placeholder="Enter product price" value="">
+            <input type="number" id="price" placeholder="{{ __('Enter product price') }}" value="">
             <p id="price-error"></p>
         </div>
 
@@ -530,51 +514,46 @@
             <p id="image-error"></p>
         </div>
 
-        <button type="submit" class="product-create"> Create</button>
-        <button type="submit" class="product-update"> Update</button>
+        <button type="submit" class="product-create">{{ __('Create') }}</button>
+        <button type="submit" class="product-update">{{ __('Update') }}</button>
     </form>
-
     <div>
-        <a href="#products"> {{ __('Products') }} </a>
-
+        <a href="#products">{{ __('Products')}}</a>
     </div>
 </div>
+
 <div class="page orders">
     <div class="list"></div>
-
     <div>
-        <a href="#products"> {{ __('Products') }} </a>
-        <a href="#cart"> {{__('Cart')}} </a>
-        <a href="#index"> {{__('Index')}} </a>
+        <a href="#products">{{ __('Products') }}</a>
+        <a href="#cart">{{__('Cart') }}</a>
+        <a href="#index">{{__('Index') }}</a>
     </div>
 </div>
 
 <div class="page order">
     <div class="list"></div>
-
     <div>
-        <a href="#orders"> {{ __('Orders') }} </a>
+        <a href="#orders">{{ __('Orders') }}</a>
     </div>
 </div>
 
 <div class="page login">
     <table class="list"></table>
-
     <form class="#loginForm">
         <div>
             <label>{{ __('Username') }}</label>
-            <input type="text" id="username" name="username" value=""/>
+            <input type="text" id="username" name="{{ __('User Name') }}" value=""/>
             <p id="username-error"></p>
 
         </div>
         <div>
             <label>{{ __('Password') }}</label>
-            <input type="password" id="password" name="password" value=""/>
+            <input type="password" id="password" name="{{ __('Password') }}" value=""/>
             <p id="password-error"></p>
         </div>
         <button class="submit-login" type="submit">{{ __('Login') }}</button>
     </form>
-
     <a href="#">{{ __('Go to Home') }}</a>
 </div>
 
