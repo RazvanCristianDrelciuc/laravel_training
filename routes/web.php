@@ -25,16 +25,3 @@ Route::middleware(['admin'])->group(function () {
 
 Route::get('/main', [App\Http\Controllers\ProductsController::class, 'main']);
 
-Route::get('check-csrf', function() {
-    return response()->json(csrf_token());
-});
-
-Route::get('/', function() {
-    return view('main');
-})->name('home');
-
-
-Auth::routes();
-
-
-

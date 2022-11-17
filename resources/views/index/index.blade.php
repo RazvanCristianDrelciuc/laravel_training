@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    <h1>Index</h1>
+    <h1>{{ __('Index') }}</h1>
 
     <div class="container">
         @forelse($products as $product)
@@ -23,7 +23,7 @@
             </ul>
         @empty
         @endforelse
-        <a href="{{route('cart.index')}}"> Go to Cart</a>
+        <a href="{{route('cart.index')}}"> {{__('Go to cart')}}</a>
     </div>
 
 @endsection

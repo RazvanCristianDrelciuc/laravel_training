@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class AdminProductsController extends Controller
 {
@@ -35,13 +37,19 @@ class AdminProductsController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required',
-
+            'image' => 'image|mimes:jpeg,png,jpg|max:10240',
         ]);
+
+        if (file_exists(public_path('/storage/images/' . $product->image))) {
+            unlink(public_path('/storage/images/' . $product->image));
+        } else {
+            dd('File does not exists.');
+        }
 
         $product->fill(['title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
-            'image'=>$this->uploadImage($request->image),
+            'image' => $this->uploadImage($request->image),
         ]);
         $product->update();
 
@@ -54,8 +62,15 @@ class AdminProductsController extends Controller
 
     public function destroy($id, Request $request)
     {
-        $productRemove = Product::find($id);
-        $productRemove->delete();
+        $product = Product::findOrFail($id);
+
+        if (file_exists(public_path('/storage/images/' . $product->image))) {
+            unlink(public_path('/storage/images/' . $product->image));
+        } else {
+            allert('File does not exists.');
+            return redirect()->route('products.index');
+        }
+        $product->delete();
         if (session()->exists('cart')) {
             foreach (session('cart') as $key => $val) {
                 if ($val['product_id'] == $id) {
@@ -77,14 +92,14 @@ class AdminProductsController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
         $product = new Product;
         $product->fill(['title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
-        //    'image' => $request->input('image')
-            'image'=>$this->uploadImage($request->image)
+            'image' => $this->uploadImage($request->image)
         ]);
         $product->save();
 
@@ -102,14 +117,12 @@ class AdminProductsController extends Controller
         $fileExt = $image->extension();
         $imageName = hash('sha1', $image);
         $image->move(storage_path('app/public/images/'), $imageName . '.' . $fileExt);
-
         return $imageName . '.' . $fileExt;
     }
 
     public function edit($id, Request $request)
     {
-
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
 
         if ($request->expectsJson()) {
             return response($product);

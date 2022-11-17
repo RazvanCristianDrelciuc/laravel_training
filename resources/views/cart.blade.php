@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    <h1>Cart</h1>
+    <h1>{{__('Cart')}}</h1>
 
     <div class="container">
         <?php $total = 0; ?>
@@ -26,28 +26,28 @@
             </ul>
         @empty
         @endforelse
-        <P><strong> Total : {{$total}}</strong></P>
+        <P><strong> {{__('Total')}} : {{$total}}</strong></P>
     </div>
 
     <div class="formular">
         <form action="{{ route('checkout') }}" method="post">
             @csrf
-            <label>Name</label>
+            <label>{{__('Name')}}</label>
             <input type="text" name="name" value="" required><br>
             <span></span>
             <br>
-            <label>Contact Details: </label>
+            <label>{{__('Contact Details')}} </label>
             <input type="text" name="details" value="" required><br>
             <span></span>
             <br>
-            <label>Comments: </label>
+            <label>{{__('Commebts')}}</label>
             <input type="text" name="comments" value=""><br>
             <span></span>
             <br>
             <input type="submit" name="submit" value="Checkout">
-            <p>* required field</p>
+            <p>* {{__('Required fields')}}</p>
         </form>
     </div>
-    <a href="{{ route('index') }}"> Go to Index</a>
+    <a href="{{ route('index') }}"> {{__('Go to index')}}</a>
 
 @endsection

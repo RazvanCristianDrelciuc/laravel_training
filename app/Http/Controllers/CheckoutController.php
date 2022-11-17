@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
-    public function checkoutPost(Request $request): \Illuminate\Http\RedirectResponse
+    public function checkoutPost(Request $request)
     {
         request()->validate([
             'name' => 'required',

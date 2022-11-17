@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
 
-    <h1>Order</h1>
-        <h3>Order ID: {{$order->id}}</h3>
-        <h3>User name: {{$order->user_name}}</h3>
-        <h3>Order Details: {{$order->details}}</h3>
-        <h3>Total price: {{$order->price}}</h3>
+    <h1>{{__('Order')}}</h1>
+        <h3>{{__('Order Id')}} {{$order->id}}</h3>
+        <h3>{{__('User Name')}} {{$order->user_name}}</h3>
+        <h3>{{__('Order Details')}} {{$order->details}}</h3>
+        <h3>{{__('Total Price')}}: {{$order->price}}</h3>
         <div class="container">
         <?php $ct = 0; ?>
             @foreach ($order->products as $product)
