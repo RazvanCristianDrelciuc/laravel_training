@@ -19,6 +19,7 @@ class ProductsController extends Controller
         return view('index.index', ['products' => Product::whereNotIn('id', $productIds)->get()]);
     }
 
+
     public function store(Request $request, $id)
     {
         $product = Product::find($id);
@@ -29,7 +30,7 @@ class ProductsController extends Controller
         }
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'product added to cart']);
+            return response()->json(['message'=>'has been added to the Cart']);
         }
         return redirect()->route('index');
     }
