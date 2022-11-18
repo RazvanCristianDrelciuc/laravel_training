@@ -79,6 +79,7 @@ class AdminProductsController extends Controller
         } else {
             return redirect()->route('products.index');
         }
+
         Product::destroy($id);
 
         if ($request->expectsJson()) {

@@ -47,7 +47,7 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <input type="submit" name="submit" value="Checkout">
-            <p>* {{ __('Required fields') }}</p>
+            <p> {{ __('Required fields') }}</p>
         </form>
     </div>
     @endif

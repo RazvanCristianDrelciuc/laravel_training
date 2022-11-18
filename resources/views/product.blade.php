@@ -33,7 +33,7 @@
             <span></span>
             <br>
             <button type="submit" name="button" >{{ isset($product) ? __('Update Button') : __('Add Button') }}</button>
-            <p>* {{ __('Required fields') }}</p>
+            <p>{{ __('Required fields') }}</p>
         </form>
     </div>
     <a href="{{ route('index') }}"> {{ __('Go to index') }}</a>

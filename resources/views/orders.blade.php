@@ -4,7 +4,6 @@
     <h1>{{ __('Orders') }}</h1>
     <div class="container">
         @forelse($orders as $order)
-            <h2>{{ __('Order nr') }}</h2>
             <ul>
                 <li>{{ $order->user_name }}</li>
                 <li>{{ $order->details }}</li>

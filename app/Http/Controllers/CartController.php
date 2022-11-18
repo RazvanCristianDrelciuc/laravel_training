@@ -14,6 +14,7 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $products = [];
+
         if (!empty(session('cart'))) {
             $products = Product::whereIn('id', session('cart'))->get();
         }

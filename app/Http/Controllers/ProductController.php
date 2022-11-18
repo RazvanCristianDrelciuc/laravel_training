@@ -15,6 +15,7 @@ class ProductController extends Controller
         } else {
             $products = Product::all();
         }
+
         if ($request->expectsJson()) {
             return response()->json($products);
         }

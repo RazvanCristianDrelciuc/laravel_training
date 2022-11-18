@@ -29,6 +29,7 @@ class CheckoutController extends Controller
             'details'=>$request->input('details'),
             'price'=>$total->sum(function ($product) {return $product['price'];})]);
         $order->save();
+
         $order->products()->attach($products);
 
         Mail::to(MAIL_MANAGER)->send(new CheckoutMail($order));

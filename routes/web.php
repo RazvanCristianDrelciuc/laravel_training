@@ -23,7 +23,6 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/order/{order}', [App\Http\Controllers\OrderController::class, 'show'])->name('order.show');
 });
 
-Route::get('/main', [App\Http\Controllers\ProductController::class, 'main']);
 
 Auth::routes();
 

@@ -14,7 +14,7 @@
                 <li>{{ $product->description }}</li>
                 <li>{{ $product->price }}</li>
 
-                <a href="{{ route('products.edit', ['product'=> $product->id]) }}">{{ __('Edit Product') }}</a>
+                <a href="{{ route('products.edit', ['product'=> $product->id]) }}"> {{ __('Edit Product') }}</a>
 
                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                     @method('DELETE')
@@ -29,7 +29,7 @@
         @endforelse
 
         <div class="removebutton">
-            <a href="{{ route('products.create') }}">{{ __('Add Product') }}</a>
+            <a href="{{ route('products.create') }}">{{ __('Add product') }}</a>
         </div>
     </div>
 

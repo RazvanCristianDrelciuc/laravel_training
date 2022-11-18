@@ -16,7 +16,7 @@
                 <li>{{ $product->price }}</li>
                 <form action="{{ route('cart.store')}}" method="POST">
                     @csrf
-                    <button type="submit">{{ __('Add') }}</button>
+                    <button type="submit">{{ __('ADD') }}</button>
                     <input type="hidden" name="id_product" value="{{ $product->id }}">
                 </form>
             </ul>
