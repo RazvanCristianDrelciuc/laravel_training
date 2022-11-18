@@ -1,24 +1,19 @@
 @extends('layouts.app')
 @section('content')
 
-    <h1>{{__('Orders')}}</h1>
+    <h1>{{ __('Orders') }}</h1>
     <div class="container">
-        <?php $ct=0; ?>
         @forelse($orders as $order)
-            <?php $ct++;?>
-            <h2>{{__('Order nr')}} {{$ct}}</h2>
+            <h2>{{ __('Order nr') }}</h2>
             <ul>
-                <li>{{ ucfirst($order->user_name) }}</li>
-                <li>{{ ucfirst($order->details) }}</li>
-                <li>{{ ucfirst($order->price) }}</li>
+                <li>{{ $order->user_name }}</li>
+                <li>{{ $order->details }}</li>
+                <li>{{ $order->price }}</li>
 
-                <form action="{{ route('order.show', $order->id) }}" method="POST">
-                    @method('POST')
-                    @csrf
-                    <button type="submit">{{ __('View Order') }}</button>
-                </form>
+                <a href="{{ route('order.show', $order->id) }}">{{ __('View Order') }}</a>
             </ul>
         @empty
+            <p>{{ __('There are no orders') }}</p>
         @endforelse
     </div>
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
-    public function checkoutPost(Request $request)
+    public function store(Request $request)
     {
         request()->validate([
             'name' => 'required',
@@ -31,12 +31,12 @@ class CheckoutController extends Controller
         $order->save();
         $order->products()->attach($products);
 
-        Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order));
+        Mail::to(MAIL_MANAGER)->send(new CheckoutMail($order));
 
         session()->forget('cart');
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'Your order has been received and an E-mail has been sent!']);
+            return response()->json();
         }
 
         return redirect()->route('index');

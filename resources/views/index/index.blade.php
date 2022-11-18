@@ -11,19 +11,21 @@
                 </div>
             </div>
             <ul>
-                <li>{{ ucfirst($product->title) }}</li>
-                <li>{{ ucfirst($product->description) }}</li>
-                <li>{{ ucfirst($product->price) }}</li>
-                <li>{{ ucfirst($product->image) }}</li>
-                <form action="{{ route('cart.store', $product->id) }}" method="POST">
-                    @method('POST')
+                <li>{{ $product->title }}</li>
+                <li>{{ $product->description }}</li>
+                <li>{{ $product->price }}</li>
+                <form action="{{ route('cart.store')}}" method="POST">
                     @csrf
                     <button type="submit">{{ __('Add') }}</button>
+                    <input type="hidden" name="id_product" value="{{ $product->id }}">
                 </form>
             </ul>
         @empty
+            <div>
+                <p>{{ __('There are no products') }}</p>
+            </div>
         @endforelse
-        <a href="{{route('cart.index')}}"> {{__('Go to cart')}}</a>
+        <a href="{{ route('cart.index') }}"> {{ __('Go to cart') }}</a>
     </div>
 
 @endsection

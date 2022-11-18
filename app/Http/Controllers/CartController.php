@@ -13,17 +13,15 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        $cart = session()->get('cart');
-        if ($cart == null) {
-            $cart = [];
+        $products = [];
+        if (!empty(session('cart'))) {
+            $products = Product::whereIn('id', session('cart'))->get();
         }
-
-        (session('cart') ? $productIds = array_column(session()->get('cart'), 'product_id') : $productIds = []);
 
         if ($request->expectsJson()) {
-            return response(Product::whereIn('id', $productIds)->get());
+            return response($products);
         }
 
-        return view('cart', ['products' => Product::whereIn('id', $productIds)->get()]);
+        return view('cart', compact('products'));
     }
 }

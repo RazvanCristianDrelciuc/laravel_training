@@ -2,25 +2,19 @@
 @section('content')
 
     <div class="container">
-        <h1>Products</h1>
-        <?php $total = 0; ?>
+        <h1>{{ __('Products') }}</h1>
         @forelse($products as $product)
-            <?php $total += $product['price'];?>
             <div class="proditem">
                 <div class="prodimage">
                     <img src="{{ asset('/storage/images/'.$product->image) }}">
                 </div>
             </div>
             <ul>
-                <li>{{ ucfirst($product->title) }}</li>
-                <li>{{ ucfirst($product->description) }}</li>
-                <li>{{ ucfirst($product->price) }}</li>
-                <li>{{ ucfirst($product->image) }}</li>
-                <form action="{{ route('products.edit', $product->id) }}" method="POST">
-                    @method('POST')
-                    @csrf
-                    <button type="submit">{{ __('Edit') }}</button>
-                </form>
+                <li>{{ $product->title }}</li>
+                <li>{{ $product->description }}</li>
+                <li>{{ $product->price }}</li>
+
+                <a href="{{ route('products.edit', ['product'=> $product->id]) }}">{{ __('Edit Product') }}</a>
 
                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                     @method('DELETE')
@@ -29,10 +23,13 @@
                 </form>
             </ul>
         @empty
+            <div>
+                <p>{{ __('There are no products.') }}</p>
+            </div>
         @endforelse
 
         <div class="removebutton">
-            <a href="{{route('product.create')}}">Add Product</a>
+            <a href="{{ route('products.create') }}">{{ __('Add Product') }}</a>
         </div>
     </div>
 

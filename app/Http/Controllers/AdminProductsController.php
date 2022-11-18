@@ -16,6 +16,7 @@ class AdminProductsController extends Controller
         if ($request->expectsJson()) {
             return response($products);
         }
+
         return view('products.index', [
             'products' => $products,
         ]);
@@ -24,15 +25,15 @@ class AdminProductsController extends Controller
     public function create(Request $request)
     {
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'has been created with succes']);
+            return response()->json();
         }
+
         return view('product');
     }
 
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -40,21 +41,30 @@ class AdminProductsController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
-        if (file_exists(public_path('/storage/images/' . $product->image))) {
-            unlink(public_path('/storage/images/' . $product->image));
-        } else {
-            dd('File does not exists.');
-        }
+        if ($request->hasFile('image')) {
 
-        $product->fill(['title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'image' => $this->uploadImage($request->image),
-        ]);
+            if (file_exists(public_path('/storage/images/' . $product->image))) {
+                unlink(public_path('/storage/images/' . $product->image));
+            }
+
+            $product->fill([
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'image' => $this->uploadImage($request->image),
+            ]);
+        } else {
+            $product->fill([
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'image' => $product->image,
+            ]);
+        }
         $product->update();
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'has been updated with succes']);
+            return response()->json();
         }
 
         return redirect()->route('products.index');
@@ -67,20 +77,12 @@ class AdminProductsController extends Controller
         if (file_exists(public_path('/storage/images/' . $product->image))) {
             unlink(public_path('/storage/images/' . $product->image));
         } else {
-            allert('File does not exists.');
             return redirect()->route('products.index');
         }
-        $product->delete();
-        if (session()->exists('cart')) {
-            foreach (session('cart') as $key => $val) {
-                if ($val['product_id'] == $id) {
-                    session()->pull('cart.' . $key);
-                }
-            }
-        }
+        Product::destroy($id);
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'has been deleted']);
+            return response()->json();
         }
 
         return redirect()->route('products.index');
@@ -96,7 +98,8 @@ class AdminProductsController extends Controller
         ]);
 
         $product = new Product;
-        $product->fill(['title' => $request->input('title'),
+        $product->fill([
+            'title' => $request->input('title'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
             'image' => $this->uploadImage($request->image)
@@ -106,7 +109,7 @@ class AdminProductsController extends Controller
         return redirect()->route('products.index');
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'The product has been added with success!']);
+            return response()->json();
         }
 
         return redirect()->route('products.index');
@@ -115,12 +118,13 @@ class AdminProductsController extends Controller
     function uploadImage($image)
     {
         $fileExt = $image->extension();
-        $imageName = hash('sha1', $image);
-        $image->move(storage_path('app/public/images/'), $imageName . '.' . $fileExt);
-        return $imageName . '.' . $fileExt;
+        $date = now()->format('Y-m-d-H-i-s');
+        $image->move(storage_path('app/public/images/'), $date . '.' . $fileExt);
+
+        return $date . '.' . $fileExt;
     }
 
-    public function edit($id, Request $request)
+    public function edit(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 

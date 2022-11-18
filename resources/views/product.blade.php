@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="container">
-        <form action="{{isset($product) ? route('product.update',['id' => $product->id]) : route('product.store')}}" method="post" enctype="multipart/form-data">
+        <form action="{{ isset($product) ? route('products.update',['product' => $product->id]) : route('products.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             @isset ($product)
                 @method('PUT')
@@ -12,34 +12,30 @@
                     <img src="{{ isset($product) ? asset('/storage/images/'.$product->image) : '' }}">
                 </div>
             </div>
-            <label>{{__('Product Title')}}</label>
-            <input type="text" name="title" value="{{isset($product) ? ($product['title']) : ''}}" required><br>
+            <label>{{ __('Product Title') }}</label>
+            <input type="text" name="title" class="@error('title') is-invalid @enderror" value="{{ isset($product) ? ($product['title']) : '' }}" ><br>
+            @error('title')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            <label>{{ __('Description') }} </label>
+            <input type="text" name="description" class="@error('description') is-invalid @enderror" value="{{ isset($product) ? ($product['description']) : '' }}" ><br>
+            @error('description')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            <label>{{ __('Price') }} </label>
+            <input type="text" name="price" class="@error('price') is-invalid @enderror" value="{{ isset($product) ? ($product['price']) : '' }}"><br>
+            @error('price')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            <br>
+            <label>{{ __('Image') }} </label>
+            <input type="file" class="form-control"  name="image" value="{{ isset($product) ? ($product['image']) : '' }}">
             <span></span>
             <br>
-            <label>{{__('Description')}} </label>
-            <input type="text" name="description" value="{{isset($product) ? ($product['description']) : ''}}" required><br>
-            <span></span>
-            <br>
-            <label>{{__('Price')}} </label>
-            <input type="text" name="price" value="{{isset($product) ? ($product['price']) : ''}}"><br>
-            <span></span>
-            <br>
-            <label>{{__('Price')}} </label>
-            <input type="file" class="form-control" required name="image">
-            <span></span>
-            <br>
-            @if(isset($product))
-                <div class="removebutton">
-                    <input type="submit" name="button" value="update">
-                </div>
-            @else
-                <div class="removebutton">
-                    <input type="submit" name="button" value="Add">
-                </div>
-            @endif
-            <p>* {{__('Required fields')}}</p>
+            <button type="submit" name="button" >{{ isset($product) ? __('Update Button') : __('Add Button') }}</button>
+            <p>* {{ __('Required fields') }}</p>
         </form>
     </div>
-    <a href="{{ route('index') }}"> {{__('Go to index')}}</a>
+    <a href="{{ route('index') }}"> {{ __('Go to index') }}</a>
 
 @endsection
