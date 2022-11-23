@@ -29,7 +29,7 @@ class ProductController extends Controller
         session()->push('cart', $product->id);
 
         if ($request->expectsJson()) {
-            return response()->json(['message'=>'has been added to the Cart']);
+            return response()->json();
         }
 
         return redirect()->route('index');

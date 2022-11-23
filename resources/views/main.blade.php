@@ -139,9 +139,11 @@
                         });
                         $('.orders').show();
                         break;
+
                     case '#order':
                         $('.order').show();
                         break;
+
                     case '#login':
                         $('.login').show();
                         break;
@@ -158,7 +160,7 @@
 
                         break;
                     case '#product':
-                        $.ajax('/product/create', {
+                        $.ajax('/products/create', {
                             type: 'GET',
                             dataType: 'json',
                             success: function () {
@@ -200,11 +202,10 @@
                         break;
                 }
             }
+
             //login
             $(document).on('click', '.submit-login', function (e) {
-
                 e.preventDefault();
-
                 let username = $('#username').val();
                 let password = $('#password').val();
                 $.ajax('/login', {
@@ -236,8 +237,9 @@
             // Add To Cart
             $(document).on('click', '.add', function (e) {
                 e.preventDefault();
-                var id = $(this).data('id');
-                $.ajax('/cart/store/' + id + '', {
+                let id = $(this).data('id');
+                $.ajax('/cart', {
+                    data:{id_product: id},
                     type: 'POST',
                     dataType: 'json',
                     success: function () {
@@ -250,8 +252,8 @@
             window.onhashchange();
             $(document).on('click', '.remove', function (e) {
                 e.preventDefault();
-                var id = $(this).data('id');
-                $.ajax('/cart/delete/' + id + '', {
+                let id = $(this).data('id');
+                $.ajax('/cart/' + id + '', {
                     type: 'DELETE',
                     dataType: 'json',
                     success: function () {
@@ -263,7 +265,7 @@
             ///Delete Product
             $(document).on('click', '.delete', function (e) {
                 e.preventDefault();
-                var id = $(this).data('id');
+                let id = $(this).data('id');
                 $.ajax('/products/' + id + '', {
                     type: 'DELETE',
                     dataType: 'json',
@@ -276,7 +278,6 @@
             //Checkout
             $(document).on('click', '.submit-order', function (e) {
                 e.preventDefault();
-                let _token = $("input[name='_token']").val();
                 let name = $('#name').val();
                 let details = $('#details').val();
                 let comments = $('#comments').val();
@@ -304,14 +305,12 @@
             $(document).on('click', '.order-details', function (e) {
                 e.preventDefault();
                 let id = $(this).data('id');
-
                 $.ajax('/order/' + id + '', {
-                    type: 'POST',
+                    type: 'GET',
                     dataType: 'json',
                     success: function (response) {
                         $('.order .list').html(renderOrder(response));
                         window.location.assign('#order');
-
                     }
                 });
             });
@@ -319,13 +318,10 @@
             //Edit Product
             $(document).on('click', '.edit', function (e) {
                 e.preventDefault();
-
-                var id = $(this).data('id');
-
-                $.ajax('/products/edit/' + id + '', {
-                    type: 'POST',
+                let id = $(this).data('id');
+                $.ajax('/products/' + id + '/edit/', {
+                    type: 'GET',
                     dataType: 'json',
-
                     success: function (response) {
                         $('.product-create').hide();
                         $('.product-update').show();
@@ -348,7 +344,6 @@
                 });
             });
 
-
             $(document).on('click', '.add-product', function (e) {
                 e.preventDefault();
                 $('.product-create').show();
@@ -370,11 +365,9 @@
 
             //Product update/ Product add
             $('#product-form').on('submit', function (e) {
-
                 $('#title-error').text('');
                 $('#description-error').text('');
                 $('#price-error').text('');
-
                 if ($('#product-id').val() != '') {
                     e.preventDefault();
                     let id = $('input[id=product-id]').val();
@@ -389,7 +382,7 @@
                         data.append('image', $('#image')[0].files[0], $('#image')[0].files[0].name);
                     }
                     $.ajax({
-                        url: '/products/update/' + id + '',
+                        url: '/products/' + id + '',
                         type: 'POST',
                         data: data,
                         contentType: false,
@@ -421,7 +414,7 @@
                         data.append('image', $('#image')[0].files[0]);
                     }
                     $.ajax({
-                        url: '/product/store',
+                        url: '/products',
                         type: 'POST',
                         data: data,
                         contentType: false,
@@ -486,7 +479,6 @@
         <a href="#index"> {{__('Index') }} </a>
         <a href="#orders"> {{__('Orders') }} </a>
     </div>
-</div>
 </div>
 
 <div class="page product">

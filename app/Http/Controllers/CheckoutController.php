@@ -19,8 +19,7 @@ class CheckoutController extends Controller
             'comments' => 'required',
         ]);
 
-        $productIds = array_column(session()->get('cart'), 'product_id');
-        $products = Product::whereIn('id', $productIds)->get();
+        $products = Product::whereIn('id', session('cart'))->get();
 
         $total=collect($products);
 
@@ -32,7 +31,7 @@ class CheckoutController extends Controller
 
         $order->products()->attach($products);
 
-        Mail::to(MAIL_MANAGER)->send(new CheckoutMail($order));
+        Mail::to('razvandrelciuc@gmail.com')->send(new CheckoutMail($order));
 
         session()->forget('cart');
 
